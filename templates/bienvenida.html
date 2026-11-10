@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ERP Django — Inicio</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 2rem; color: #333; }
+        h1 { color: #0A2342; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 2rem auto; }
+        .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-decoration: none; color: inherit; text-align: center; border-top: 4px solid #B8860B; }
+        .card:hover { transform: translateY(-4px); transition: all 0.2s; }
+        .icono { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+    <h1>🚀 ERP Django — Panel Principal</h1>
+    <div class="grid">
+        {% for m in modulos %}
+        <a href="{{ m.url }}" class="card">
+            <div class="icono">{{ m.icono }}</div>
+            <h3>{{ m.nombre }}</h3>
+            <p>{{ m.descripcion }}</p>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+</html>

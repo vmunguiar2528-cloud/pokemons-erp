@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Clientes — ERP{% endblock %}
+
+{% block extra_css %}
+<style>
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .btn { background: #0A2342; color: white; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: 500; }
+    .btn:hover { background: #133863; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #0A2342; color: white; }
+    tr:hover { background-color: #f8f9fa; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>👥 Cartera de Clientes</h1>
+    <a href="{% url 'clientes:crear' %}" class="btn">➕ Nuevo Cliente</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in clientes %}
+        <tr>
+            <td>#{{ c.id }}</td>
+            <td><strong>{{ c.nombre }}</strong></td>
+            <td>{{ c.correo }}</td>
+            <td>{{ c.telefono|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="text-align: center; color: #777; padding: 2rem;">No hay clientes registrados aún.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

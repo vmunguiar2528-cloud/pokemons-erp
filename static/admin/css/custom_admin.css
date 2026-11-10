@@ -1,0 +1,92 @@
+/* FORZADO DE VARIABLES NATIVAS DE DJANGO ADMIN 4.2 */
+:root, [data-theme="dark"], [data-theme="light"] {
+    --primary: #ffcb05 !important;
+    --primary-line: #ffcb05 !important;
+    --accent: #9d4edd !important;
+    --primary-fg: #000000 !important;
+    
+    --header-bg: #18142a !important;
+    --header-color: #ffcb05 !important;
+    --header-link-color: #00f0ff !important;
+    
+    --body-bg: #0f0c1b !important;
+    --body-fg: #ffffff !important;
+    --body-quiet-color: #cbd5e1 !important;
+    --body-loud-color: #ffffff !important;
+    
+    --breadcrumbs-bg: #110c22 !important;
+    --breadcrumbs-fg: #00f0ff !important;
+    --breadcrumbs-link-fg: #ffcb05 !important;
+    
+    --darkmode-bg: #0f0c1b !important;
+    --border-color: #ffcb05 !important;
+    
+    --button-bg: #ffcb05 !important;
+    --button-fg: #000000 !important;
+    --button-hover-bg: #e6b800 !important;
+    --default-button-bg: #9d4edd !important;
+    --default-button-fg: #ffffff !important;
+    
+    --close-button-bg: #ff3e3e !important;
+    --delete-button-bg: #ff3e3e !important;
+}
+
+/* Encabezado y Barra Superior */
+#header {
+    background: #18142a !important;
+    border-bottom: 3px solid #ffcb05 !important;
+}
+
+#site-name a {
+    font-family: 'Segoe UI', sans-serif !important;
+    color: #ffcb05 !important;
+    font-weight: 900 !important;
+    font-size: 1.4rem !important;
+    text-shadow: 0 0 10px rgba(255, 203, 5, 0.6) !important;
+}
+
+/* Cajas y Módulos */
+.module {
+    background: #18142a !important;
+    border: 2px solid #ffcb05 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6) !important;
+}
+
+.module h2, .module caption, caption {
+    background: linear-gradient(135deg, #9d4edd, #5b1380) !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 1rem !important;
+    letter-spacing: 1px !important;
+}
+
+/* Enlaces y Acciones */
+a:link, a:visited {
+    color: #00f0ff !important;
+}
+
+a:hover {
+    color: #ffcb05 !important;
+}
+
+.addlink, .changelink {
+    color: #ffcb05 !important;
+    font-weight: bold !important;
+}
+
+/* Tablas dentro del Admin */
+#changelist table {
+    background: #18142a !important;
+    border: 1px solid #ffcb05 !important;
+}
+
+#changelist table th {
+    background: #251b42 !important;
+    color: #ffcb05 !important;
+}
+
+#changelist table td {
+    background: #18142a !important;
+    color: #ffffff !important;
+}

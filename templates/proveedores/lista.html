@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Proveedores — ERP{% endblock %}
+
+{% block extra_css %}
+<style>
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .btn { background: #0A2342; color: white; padding: 0.6rem 1.2rem; text-decoration: none; border-radius: 4px; font-weight: 500; }
+    .btn:hover { background: #133863; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #0A2342; color: white; }
+    tr:hover { background-color: #f8f9fa; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>🏭 Red de Proveedores</h1>
+    <a href="{% url 'proveedores:crear' %}" class="btn">➕ Nuevo Proveedor</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Empresa</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in proveedores %}
+        <tr>
+            <td>#{{ p.id }}</td>
+            <td><strong>{{ p.nombre }}</strong></td>
+            <td>{{ p.empresa|default:"Particular" }}</td>
+            <td>{{ p.correo }}</td>
+            <td>{{ p.telefono|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align: center; color: #777; padding: 2rem;">No hay proveedores registrados aún.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Métricas Pokémons ERP{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .stat-card { background: var(--bg-card); border: 2px solid var(--accent-purple); padding: 2rem; border-radius: 12px; text-align: center; box-shadow: 0 4px 15px rgba(157, 78, 221, 0.2); }
+    .stat-card h3 { color: var(--text-muted); font-size: 1rem; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .stat-num { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; color: var(--primary-yellow); text-shadow: 0 0 10px rgba(255, 203, 5, 0.5); }
+    
+    .download-zone { background: var(--bg-card); border: 1px dashed var(--accent-cyan); padding: 2rem; border-radius: 12px; text-align: center; }
+    .btn-excel { background: #10b981 !important; color: white !important; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4) !important; margin-right: 1rem; }
+    .btn-pdf { background: #ef4444 !important; color: white !important; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4) !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 style="color: var(--primary-yellow); margin-bottom: 2rem; text-align: center;">📊 PANEL DE CONTROL Y MÉTRICAS</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Entrenadores Registrados</h3>
+        <div class="stat-num">{{ total_clientes }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Productos en Stock</h3>
+        <div class="stat-num">{{ total_productos }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Ventas Realizadas</h3>
+        <div class="stat-num">{{ total_ventas_count }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Ingresos Totales</h3>
+        <div class="stat-num">${{ ingresos_totales }}</div>
+    </div>
+</div>
+
+<div class="download-zone">
+    <h2 style="color: var(--accent-cyan); margin-bottom: 1.5rem;">📥 EXPORTACIÓN DE REPORTES OFICIALES</h2>
+    <a href="{% url 'reportes:exportar_excel' %}" class="btn btn-excel">🟢 Exportar Inventario (Excel .xlsx)</a>
+    <a href="{% url 'reportes:exportar_pdf' %}" class="btn btn-pdf">🔴 Exportar Reporte de Ventas (PDF)</a>
+</div>
+{% endblock %}

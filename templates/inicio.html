@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Centro de Control — Pokémons ERP{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-banner {
+        background: linear-gradient(135deg, rgba(176, 86, 255, 0.4) 0%, rgba(255, 62, 62, 0.35) 50%, rgba(0, 240, 255, 0.25) 100%), #15102a;
+        border: 3px solid var(--primary-yellow);
+        border-radius: 20px;
+        padding: 3.5rem 2rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        box-shadow: 0 0 45px rgba(255, 203, 5, 0.25);
+    }
+    .hero-banner h1 { 
+        font-size: 3.2rem; 
+        color: var(--primary-yellow); 
+        margin-bottom: 1.2rem; 
+        text-shadow: 0 0 20px rgba(255,203,5,0.7); 
+    }
+    .hero-banner p { 
+        font-size: 1.35rem; 
+        color: #ffffff; 
+        max-width: 850px; 
+        margin: 0 auto 2.2rem; 
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    .grid-otaku {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        gap: 2rem;
+    }
+    .card-otaku {
+        background: var(--bg-card);
+        border: 2px solid rgba(255, 203, 5, 0.3);
+        border-radius: 16px;
+        padding: 2.2rem;
+        text-align: center;
+        text-decoration: none;
+        color: #ffffff;
+        transition: all 0.3s;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+    }
+    .card-otaku:hover {
+        transform: translateY(-10px) scale(1.03);
+        border-color: var(--primary-yellow);
+        box-shadow: 0 0 35px rgba(255, 203, 5, 0.45);
+        background: #1e183a;
+    }
+    .card-icon { font-size: 3.8rem; margin-bottom: 1.2rem; display: block; filter: drop-shadow(0 0 10px rgba(255,203,5,0.5)); }
+    .card-otaku h3 { color: var(--primary-yellow); margin-bottom: 0.6rem; font-size: 1.5rem; text-shadow: 0 0 8px rgba(255,203,5,0.4); }
+    .card-otaku p { color: var(--text-muted); font-size: 1.1rem; font-weight: 600; line-height: 1.4; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero-banner">
+    <h1>⚡ POKÉMONS STORE ERP ⚡</h1>
+    <p>¡Centro oficial de gestión! Administra el inventario de cartas TCG, figuras de colección, merchandising, entrenadores registrados y métricas en tiempo real.</p>
+    <a href="{% url 'reportes:dashboard' %}" class="btn">📊 Ver Dashboard de Analítica de Pokémons Store</a>
+</div>
+
+<h2 style="color: var(--primary-yellow); margin-bottom: 2rem; text-align: center; text-shadow: 0 0 12px rgba(255,203,5,0.5);">🎮 MÓDULOS DE GESTIÓN OTAKU</h2>
+
+<div class="grid-otaku">
+    <a href="{% url 'productos:lista' %}" class="card-otaku">
+        <span class="card-icon">🎴</span>
+        <h3>Inventario TCG & Merch</h3>
+        <p>Catálogo de cartas, coleccionables, precios e imágenes de Pokémons Store.</p>
+    </a>
+    <a href="{% url 'clientes:lista' %}" class="card-otaku">
+        <span class="card-icon">🧢</span>
+        <h3>Entrenadores Registrados</h3>
+        <p>Directorio de clientes frecuentes y membresías de la tienda.</p>
+    </a>
+    <a href="{% url 'proveedores:lista' %}" class="card-otaku">
+        <span class="card-icon">📦</span>
+        <h3>Distribuidores Oficiales</h3>
+        <p>Proveedores de boosters, figuras y coleccionables importados.</p>
+    </a>
+    <a href="{% url 'ventas:lista' %}" class="card-otaku">
+        <span class="card-icon">⚡</span>
+        <h3>Centro de Ventas</h3>
+        <p>Registra transacciones y actualiza el stock de Pokémons Store automáticamente.</p>
+    </a>
+</div>
+{% endblock %}
