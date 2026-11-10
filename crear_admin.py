@@ -8,12 +8,19 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+# Usuario y contraseña exactamente como los ingresarás
 USERNAME = 'victor'
-EMAIL = 'victor@ejemplo.com'
-PASSWORD = 'TuPasswordSeguro2026!'  # <--- Cambia esto por la contraseña que desees
+PASSWORD = 'vict0rwapo'
 
-if not User.objects.filter(username=USERNAME).exists():
-    User.objects.create_superuser(USERNAME, EMAIL, PASSWORD)
-    print(f"¡Superusuario '{USERNAME}' creado exitosamente!")
-else:
-    print(f"El usuario '{USERNAME}' ya existe.")
+# Busca el usuario o lo crea
+user, created = User.objects.get_or_create(username=USERNAME)
+user.email = 'v.munguiar.2528@cbtis198.edu.mx'
+user.set_password('vict0rwapo')
+user.is_superuser = True
+user.is_staff = True
+user.is_active = True
+user.save()
+
+print(f"==========================================")
+print(f"USUARIO '{USERNAME}' CONFIGURADO CORRECTAMENTE")
+print(f"==========================================")
