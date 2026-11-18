@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import environ
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,12 +14,13 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'testserver',
-    'pokemons-erp.onrender.com',
     '.onrender.com',
 ]
+render_hostname = env('RENDER_EXTERNAL_HOSTNAME', default='')
+if render_hostname:
+    ALLOWED_HOSTS.append(render_hostname)
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://pokemons-erp.onrender.com',
     'https://*.onrender.com',
     'http://localhost:8000',
     'http://127.0.0.1:8000',
@@ -88,10 +90,11 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        ssl_require=env('RENDER', default=False),
+    )
 }
 
 LANGUAGE_CODE = 'es-mx'
