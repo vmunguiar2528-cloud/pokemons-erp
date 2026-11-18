@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Error en el pago{% endblock %}
+{% block content %}
+<div style="display:flex;justify-content:center;align-items:center;min-height:55vh;">
+  <div style="max-width:480px;text-align:center;background:rgba(24,20,42,.95);border:2px solid #e63946;border-radius:16px;padding:2rem;">
+    <div style="font-size:4rem;margin-bottom:1rem;">❌</div>
+    <h2 style="color:#ff8080;">Error en el pago</h2>
+    <p>No pudimos procesar tu pago. Tu carrito sigue intacto.</p>
+    <p>{{ mensaje }}</p>
+    <p style="color:var(--text-muted);">Tu pedido quedó registrado y puedes intentar nuevamente.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;margin-top:1.5rem;">
+      <a href="{% url 'catalogo:carrito' %}" class="btn">← Volver al carrito</a>
+      <a href="{% url 'catalogo:checkout' %}" class="btn">Reintentar pago</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

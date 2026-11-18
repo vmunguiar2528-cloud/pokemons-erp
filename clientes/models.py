@@ -5,6 +5,7 @@ class Cliente(models.Model):
     correo = models.EmailField(unique=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
     direccion = models.TextField(blank=True, null=True)
+    activo = models.BooleanField(default=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

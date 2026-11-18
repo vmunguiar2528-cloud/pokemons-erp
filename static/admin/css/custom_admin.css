@@ -31,10 +31,17 @@
     --delete-button-bg: #ff3e3e !important;
 }
 
+body {
+    background: #0f0c1b !important;
+    background-image: radial-gradient(circle at 10% 10%, rgba(157, 78, 221, 0.25) 0%, transparent 45%),
+                      radial-gradient(circle at 90% 90%, rgba(255, 62, 62, 0.2) 0%, transparent 45%) !important;
+}
+
 /* Encabezado y Barra Superior */
 #header {
     background: #18142a !important;
     border-bottom: 3px solid #ffcb05 !important;
+    box-shadow: 0 4px 20px rgba(255, 203, 5, 0.2) !important;
 }
 
 #site-name a {
@@ -89,4 +96,31 @@ a:hover {
 #changelist table td {
     background: #18142a !important;
     color: #ffffff !important;
+}
+
+button, input[type="submit"], input[type="button"], .button, .submit-row input {
+    background: linear-gradient(135deg, #ffcb05, #e6b800) !important;
+    color: #000 !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 0 14px rgba(255, 203, 5, 0.4) !important;
+}
+
+.delete-button, .button.delete {
+    background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+    color: white !important;
+}
+
+.breadcrumbs {
+    background: #110c22 !important;
+    color: #00f0ff !important;
+    border-bottom: 1px solid #ffcb05 !important;
+}
+
+.object-tools a {
+    border-radius: 8px !important;
+    border: 1px solid #ffcb05 !important;
+    background: rgba(255, 203, 5, 0.1) !important;
+    color: #ffcb05 !important;
 }

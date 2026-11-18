@@ -3,9 +3,16 @@
 {% block title %}Detalle de Producto — ERP{% endblock %}
 
 {% block content %}
-<div style="background: white; padding: 2rem; border-radius: 8px; max-width: 600px; margin: 2rem auto; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+<div style="background: white; padding: 2rem; border-radius: 10px; max-width: 700px; margin: 2rem auto; box-shadow: 0 2px 10px rgba(0,0,0,0.08);">
     <h2>📦 {{ producto.nombre }}</h2>
     <hr style="margin: 1rem 0; border: none; border-top: 1px solid #eee;">
+
+    {% if producto.imagen %}
+        <div style="margin: 1rem 0; text-align: center;">
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="max-width: 100%; max-height: 320px; border-radius: 12px; border: 1px solid #ddd; background: #f8fafc;">
+        </div>
+    {% endif %}
+
     <p><strong>ID:</strong> #{{ producto.id }}</p>
     <p><strong>Categoría:</strong> {{ producto.categoria.nombre|default:"Sin categoría" }}</p>
     <p><strong>Proveedor:</strong> {{ producto.proveedor.nombre|default:"Sin proveedor" }}</p>
@@ -13,8 +20,8 @@
     <p><strong>Stock disponible:</strong> {{ producto.stock }} unidades</p>
 
     <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
-        <a href="{% url 'productos:editar' producto.id %}" style="background: #ffc107; color: black; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">✏️ Editar</a>
-        <a href="{% url 'productos:lista' %}" style="background: #6c757d; color: white; padding: 0.5rem 1rem; border-radius: 4px; text-decoration: none;">⬅️ Volver</a>
+        <a href="{% url 'productos:editar' producto.id %}" style="background: #ffc107; color: black; padding: 0.6rem 1rem; border-radius: 6px; text-decoration: none;">✏️ Editar</a>
+        <a href="{% url 'productos:lista' %}" style="background: #6c757d; color: white; padding: 0.6rem 1rem; border-radius: 6px; text-decoration: none;">⬅️ Volver</a>
     </div>
 </div>
 {% endblock %}

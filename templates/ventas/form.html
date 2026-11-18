@@ -4,13 +4,48 @@
 
 {% block extra_css %}
 <style>
-    .card { background: white; max-width: 550px; margin: 2rem auto; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.08); }
-    .card h2 { margin-bottom: 1.5rem; color: #0A2342; }
+    .card {
+        background: #18142a;
+        max-width: 550px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border: 2px solid #ffcb05;
+        border-radius: 12px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+        color: #ffffff;
+    }
+    .card h2 { margin-bottom: 1.5rem; color: #ffcb05; }
     form p { margin-bottom: 1rem; }
-    label { display: block; margin-bottom: 0.4rem; font-weight: bold; }
-    select, input { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    .btn { background: #0A2342; color: white; padding: 0.75rem; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 1rem; font-weight: bold; margin-top: 1rem; }
-    .btn:hover { background: #133863; }
+    label { display: block; margin-bottom: 0.4rem; font-weight: 800; color: #ffcb05; }
+    select, input {
+        width: 100%;
+        padding: 0.65rem;
+        border: 2px solid #9d4edd;
+        border-radius: 6px;
+        box-sizing: border-box;
+        background: #0f0c1b;
+        color: #ffffff;
+    }
+    input::placeholder { color: #cbd5e1; }
+    input[readonly] {
+        background: #25213a;
+        color: #ffcb05;
+        font-weight: 900;
+    }
+    .errorlist, .helptext { color: #ff8080; font-weight: 700; }
+    .btn {
+        background: #ffcb05;
+        color: #111827;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1rem;
+        font-weight: 900;
+        margin-top: 1rem;
+    }
+    .btn:hover { background: #ffe066; }
 </style>
 {% endblock %}
 
@@ -22,5 +57,38 @@
         {{ form.as_p }}
         <button type="submit" class="btn">Guardar Venta</button>
     </form>
+
+    <script>
+        const preciosPokemon = JSON.parse('{{ precios_json|escapejs }}');
+
+        function actualizarVenta() {
+            const productoId = document.getElementById('id_producto')?.value;
+            const cantidad = parseInt(document.getElementById('id_cantidad')?.value || '1', 10);
+            const monto = document.getElementById('id_monto_pagado');
+
+            if (monto && preciosPokemon[productoId]) {
+                const total = parseFloat(preciosPokemon[productoId]) * Math.max(cantidad, 1);
+                monto.value = total.toFixed(2);
+            }
+
+            const metodo = document.getElementById('id_metodo_pago')?.value;
+            const referencia = document.getElementById('id_referencia_transferencia')?.closest('p');
+            const tarjeta = document.getElementById('id_numero_tarjeta')?.closest('p');
+            if (referencia) referencia.style.display = metodo === 'transferencia' ? '' : 'none';
+            if (tarjeta) tarjeta.style.display = metodo === 'tarjeta' ? '' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            actualizarVenta();
+            document.getElementById('id_producto')?.addEventListener('change', actualizarVenta);
+            document.getElementById('id_cantidad')?.addEventListener('input', actualizarVenta);
+            document.getElementById('id_metodo_pago')?.addEventListener('change', actualizarVenta);
+
+            const numeroTarjeta = document.getElementById('id_numero_tarjeta');
+            numeroTarjeta?.addEventListener('input', function () {
+                this.value = this.value.replace(/[^0-9 ]/g, '').slice(0, 23);
+            });
+        });
+    </script>
 </div>
 {% endblock %}

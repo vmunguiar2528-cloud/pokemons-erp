@@ -5,3 +5,5 @@ from .models import Proveedor
 class ProveedorAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre', 'empresa', 'correo', 'telefono')
     search_fields = ('nombre', 'empresa')
+    actions = ['delete_selected']
+    can_delete = True

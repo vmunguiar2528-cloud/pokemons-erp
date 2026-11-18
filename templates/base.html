@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,6 +17,8 @@
             --text-light: #ffffff;
             --text-muted: #cbd5e1;
             --border-glow: #ffcb05;
+            --seal-red: #e63946;
+            --seal-dark: #1f1b2d;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Rajdhani', sans-serif; }
@@ -23,15 +26,43 @@
         body { 
             background: var(--bg-dark); 
             background-image: 
-                radial-gradient(circle at 10% 10%, rgba(157, 78, 221, 0.25) 0%, transparent 45%),
-                radial-gradient(circle at 90% 90%, rgba(255, 62, 62, 0.2) 0%, transparent 45%);
+                linear-gradient(rgba(15, 12, 27, 0.72), rgba(15, 12, 27, 0.80)),
+                url('/static/images/pikachu.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-attachment: fixed;
             color: var(--text-light); 
             display: flex; 
             flex-direction: column; 
             min-height: 100vh;
         }
-        
-        /* Navbar Otaku */
+
+        .brand-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .brand-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, #ffffff 0 18%, #111827 19% 32%, #ef4444 33% 62%, #f8fafc 63% 72%, #111827 73% 100%);
+            border: 3px solid var(--primary-yellow);
+            box-shadow: 0 0 15px rgba(255, 203, 5, 0.8);
+            position: relative;
+        }
+
+        .brand-mark::before {
+            content: "";
+            position: absolute;
+            inset: 35% 0 auto 0;
+            height: 3px;
+            background: var(--primary-yellow);
+            box-shadow: 0 0 8px rgba(255, 203, 5, 0.7);
+        }
+
         .navbar { 
             background: rgba(24, 20, 42, 0.98); 
             backdrop-filter: blur(12px);
@@ -62,7 +93,18 @@
 
         .navbar-nav { display: flex; list-style: none; gap: 1rem; }
 
-        .nav-link { 
+        .spotify-link {
+            color: var(--primary-yellow) !important;
+            border: 1px solid rgba(255, 203, 5, 0.7) !important;
+            background: rgba(255, 203, 5, 0.08);
+        }
+
+        .spotify-link:hover {
+            background: rgba(255, 203, 5, 0.18);
+            box-shadow: 0 0 18px rgba(255, 203, 5, 0.45);
+        }
+
+        .nav-link {
             color: #ffffff; 
             text-decoration: none; 
             font-weight: 700; 
@@ -95,7 +137,6 @@
         
         .container { flex: 1; padding: 2.5rem 2rem; max-width: 1300px; margin: 0 auto; width: 100%; }
 
-        /* General UI Elements */
         h1, h2, h3, h4 { font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
 
         .btn {
@@ -120,7 +161,6 @@
             box-shadow: 0 0 30px rgba(255, 203, 5, 0.8);
         }
 
-        /* Notifications */
         .messages-container { max-width: 1300px; margin: 1.5rem auto 0; padding: 0 2rem; }
         .alert {
             padding: 1rem 1.5rem;
@@ -133,7 +173,6 @@
         .alert-success { background: rgba(0, 240, 255, 0.2); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
         .alert-error, .alert-danger { background: rgba(255, 62, 62, 0.25); color: #ff8080; border: 1px solid var(--primary-red); }
 
-        /* TABLAS OTAKU DE ALTO CONTRASTE (CORREGIDAS) */
         table { 
             width: 100%; 
             border-collapse: separate; 
@@ -180,7 +219,6 @@
             display: inline-block;
         }
 
-        /* Form Inputs */
         input, select, textarea {
             background: #0f0c1b !important;
             border: 2px solid var(--accent-purple) !important;
@@ -196,7 +234,6 @@
             box-shadow: 0 0 15px rgba(255, 203, 5, 0.5) !important;
         }
 
-        /* Footer con Créditos */
         .footer { 
             background: #05030a; 
             border-top: 2px solid rgba(255, 203, 5, 0.3); 
@@ -208,20 +245,74 @@
             font-weight: 600;
         }
         .footer strong { color: var(--primary-yellow); }
+
+        .global-player {
+            position: fixed;
+            left: 1.25rem;
+            bottom: 1.25rem;
+            z-index: 1000;
+            width: 320px;
+            max-width: calc(100vw - 2.5rem);
+            padding: 0.65rem 0.75rem;
+            border: 2px solid var(--primary-yellow);
+            border-radius: 14px;
+            background: rgba(24, 20, 42, 0.97);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 18px rgba(255, 203, 5, 0.25);
+        }
+
+        .global-player-title {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--primary-yellow);
+            font-weight: 800;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .global-player audio {
+            display: block;
+            width: 100%;
+            height: 38px;
+        }
+
+        @media (max-width: 600px) {
+            .global-player {
+                left: 0.75rem;
+                bottom: 0.75rem;
+            }
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
+    <div class="global-player" aria-label="Reproductor de música">
+        <span class="global-player-title">♫ Tu Boda — Oscar Maydon x Fuerza Regida</span>
+        <audio id="global-player" controls preload="metadata">
+            <source src="{% static 'audio/tu_boda.mp3' %}" type="audio/mpeg">
+        </audio>
+    </div>
+
     <nav class="navbar">
-        <a href="{% url 'reportes:inicio' %}" class="navbar-brand">⚡ POKÉMONS ERP</a>
+        <a href="{% url 'reportes:inicio' %}" class="navbar-brand">
+            <span class="brand-wrap">
+                <span class="brand-mark" aria-label="Pokéball"></span>
+                <span>POKÉMONS ERP</span>
+            </span>
+        </a>
         <ul class="navbar-nav">
             <li><a href="{% url 'reportes:inicio' %}" class="nav-link">🎮 Inicio</a></li>
             <li><a href="{% url 'reportes:dashboard' %}" class="nav-link">📊 Métricas</a></li>
+            <li><a href="{% url 'catalogo:catalogo' %}" class="nav-link">🛒 Tienda</a></li>
             <li><a href="{% url 'productos:lista' %}" class="nav-link">⚡ Catálogo TCG/Merch</a></li>
             <li><a href="{% url 'clientes:lista' %}" class="nav-link">🔴 Entrenadores</a></li>
             <li><a href="{% url 'proveedores:lista' %}" class="nav-link">🏬 Distribuidores</a></li>
             <li><a href="{% url 'ventas:lista' %}" class="nav-link">🪙 Ventas</a></li>
+            {% if carrito_total_items > 0 %}
+                <li><a href="{% url 'catalogo:carrito' %}" class="nav-link spotify-link">🧺 Carrito ({{ carrito_total_items }})</a></li>
+            {% endif %}
             <li><a href="/admin/" class="nav-link admin-link">⚙️ PokeAdmin</a></li>
         </ul>
     </nav>
@@ -244,6 +335,44 @@
         <p>⚡ &copy; 2026 <strong>POKÉMONS ERP</strong> — Centro Oficial de Gestión Otaku & TCG</p>
         <p style="margin-top: 0.4rem; color: var(--accent-cyan); font-family: 'Orbitron', sans-serif; font-size: 0.95rem;">Desarrollado por: <strong>Victor Munguía</strong></p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const player = document.getElementById('global-player');
+            if (!player) return;
+
+            const timeKey = 'tu_boda_current_time';
+            const playingKey = 'tu_boda_should_play';
+
+            player.addEventListener('loadedmetadata', function () {
+                const savedTime = parseFloat(sessionStorage.getItem(timeKey) || '0');
+                if (savedTime > 0 && savedTime < player.duration) {
+                    player.currentTime = savedTime;
+                }
+
+                if (sessionStorage.getItem(playingKey) === 'true') {
+                    player.play().catch(function () {});
+                }
+            });
+
+            player.addEventListener('play', function () {
+                sessionStorage.setItem(playingKey, 'true');
+            });
+
+            player.addEventListener('pause', function () {
+                sessionStorage.setItem(playingKey, 'false');
+            });
+
+            player.addEventListener('timeupdate', function () {
+                sessionStorage.setItem(timeKey, String(player.currentTime));
+            });
+
+            window.addEventListener('beforeunload', function () {
+                sessionStorage.setItem(timeKey, String(player.currentTime));
+                sessionStorage.setItem(playingKey, player.paused ? 'false' : 'true');
+            });
+        });
+    </script>
 
     {% block extra_js %}{% endblock %}
 </body>

@@ -5,3 +5,5 @@ from .models import Cliente
 class ClienteAdmin(admin.ModelAdmin):
     list_display = ('id', 'nombre', 'correo', 'telefono', 'fecha_creacion')
     search_fields = ('nombre', 'correo')
+    actions = ['delete_selected']
+    can_delete = True
