@@ -37,17 +37,51 @@
     <div class="checkout-card">
         <h3 style="color:var(--primary-yellow); margin-bottom:1rem;">🔒 Datos de pago</h3>
         {% if publishable_key == 'pk_test_placeholder' %}
-        <p style="color:#ff8080;font-weight:800;">⚠️ Configura las claves reales de Stripe sandbox en el archivo `.env` antes de procesar pagos.</p>
-        {% endif %}
-        {% if client_secret %}
-        <p style="color:var(--text-muted); margin-bottom:1rem;">Tus datos son procesados de forma segura por Stripe.</p>
-        <label style="display:block; margin-bottom:.5rem;">Número de tarjeta</label>
-        <div id="card-element"></div>
-        <div id="card-errors" role="alert"></div>
-        <button id="submit-btn" class="btn" style="width:100%; margin-top:1rem;">🔐 Confirmar pago de ${{ totales.total }}</button>
-        <p style="text-align:center; color:var(--text-muted); margin-top:.75rem;">Tarjeta de prueba: <code>4242 4242 4242 4242</code></p>
+        <p style="color:#ffd166;font-weight:800;">🧪 Modo demostración activo: podrás completar la compra sin claves reales de Stripe.</p>
+        <p style="color:var(--text-muted); margin-bottom:1rem;">Completa los datos simulados para probar el proceso de compra.</p>
+        <form method="post">
+            {% csrf_token %}
+            <label style="display:block; margin-bottom:.35rem;" for="numero_tarjeta">Número de tarjeta</label>
+            <input id="numero_tarjeta" name="numero_tarjeta" type="text" inputmode="numeric" autocomplete="off" maxlength="19" placeholder="4242 4242 4242 4242" required style="width:100%; margin-bottom:.8rem; padding:.65rem; border-radius:8px; border:1px solid #9d4edd; background:#0f0c1b; color:white;">
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem;">
+                <div>
+                    <label style="display:block; margin-bottom:.35rem;" for="tipo_tarjeta">Tipo de tarjeta</label>
+                    <select id="tipo_tarjeta" name="tipo_tarjeta" required style="width:100%; padding:.65rem; border-radius:8px; border:1px solid #9d4edd; background:#0f0c1b; color:white;">
+                        <option value="">Selecciona</option>
+                        <option value="credito">Crédito</option>
+                        <option value="debito">Débito</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:.35rem;" for="banco_tarjeta">Banco</label>
+                    <select id="banco_tarjeta" name="banco_tarjeta" required style="width:100%; padding:.65rem; border-radius:8px; border:1px solid #9d4edd; background:#0f0c1b; color:white;">
+                        <option value="">Selecciona</option>
+                        <option value="BBVA">BBVA</option>
+                        <option value="Banamex">Banamex</option>
+                        <option value="Santander">Santander</option>
+                        <option value="Banorte">Banorte</option>
+                        <option value="HSBC">HSBC</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin-top:.8rem;">
+                <div>
+                    <label style="display:block; margin-bottom:.35rem;" for="vencimiento">Vencimiento</label>
+                    <input id="vencimiento" name="vencimiento" type="text" inputmode="numeric" maxlength="5" placeholder="MM/AA" required style="width:100%; padding:.65rem; border-radius:8px; border:1px solid #9d4edd; background:#0f0c1b; color:white;">
+                </div>
+                <div>
+                    <label style="display:block; margin-bottom:.35rem;" for="cvc">CVC</label>
+                    <input id="cvc" name="cvc" type="password" inputmode="numeric" maxlength="4" placeholder="123" required style="width:100%; padding:.65rem; border-radius:8px; border:1px solid #9d4edd; background:#0f0c1b; color:white;">
+                </div>
+            </div>
+
+            <button type="submit" class="btn" style="width:100%; margin-top:1.1rem;">🔐 Proceder al pago →</button>
+        </form>
         {% else %}
-        <p style="color:var(--text-muted); margin-bottom:1.5rem;">Haz clic para crear tu pedido e introducir los datos de la tarjeta.</p>
+        <p style="color:var(--text-muted); margin-bottom:1.5rem;">Haz clic para crear tu pedido e introducir los datos seguros de la tarjeta.</p>
         <form method="post">{% csrf_token %}<button type="submit" class="btn" style="width:100%;">Proceder al pago →</button></form>
         {% endif %}
     </div>

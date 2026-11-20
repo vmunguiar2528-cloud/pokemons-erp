@@ -8,3 +8,51 @@
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+  body {
+    background:
+      linear-gradient(rgba(15, 12, 27, 0.82), rgba(15, 12, 27, 0.82)),
+      url("{% static 'images/pikachu.png' %}") center right / 390px auto no-repeat fixed,
+      #0f0c1b;
+  }
+
+  #container, #content {
+    background: transparent;
+  }
+
+  #content-main {
+    background:
+      linear-gradient(135deg, rgba(24, 20, 42, 0.94), rgba(24, 20, 42, 0.78)),
+      url("{% static 'images/pikachu.png' %}") right 20px bottom 20px / 260px auto no-repeat;
+    border: 2px solid rgba(255, 203, 5, 0.45);
+    border-radius: 16px;
+    padding: 18px;
+  }
+
+  #content-main .module,
+  #content-related {
+    background: rgba(24, 20, 42, 0.92);
+  }
+
+  #content-main .module h2,
+  #content-main .module caption,
+  #content-related h2 {
+    background: #79aec8;
+  }
+
+  #header {
+    background: #79aec8;
+  }
+
+  @media (max-width: 900px) {
+    #content-main {
+      background:
+        linear-gradient(135deg, rgba(24, 20, 42, 0.95), rgba(24, 20, 42, 0.82)),
+        url("{% static 'images/pikachu.png' %}") right bottom / 180px auto no-repeat;
+    }
+  }
+</style>
+{% endblock %}

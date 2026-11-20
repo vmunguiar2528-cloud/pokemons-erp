@@ -4,6 +4,7 @@ import stripe
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView
 
@@ -164,19 +165,25 @@ def checkout(request):
     if request.method == 'POST':
         clave_secreta = settings.STRIPE_SECRET_KEY
         clave_publica = settings.STRIPE_PUBLISHABLE_KEY
-        if (
+        claves_stripe_invalidas = (
             'placeholder' in clave_secreta
             or 'placeholder' in clave_publica
             or not clave_secreta.startswith('sk_test_')
             or not clave_publica.startswith('pk_test_')
-        ):
-            messages.error(
-                request,
-                'Stripe sandbox no está configurado: agrega tus claves sk_test_ y pk_test_ al archivo .env.',
-            )
-            return redirect('catalogo:pago_error')
+        )
 
         try:
+            if claves_stripe_invalidas and settings.DEBUG:
+                numero_tarjeta = ''.join(filter(str.isdigit, request.POST.get('numero_tarjeta', '')))
+                tipo_tarjeta = request.POST.get('tipo_tarjeta', '')
+                banco_tarjeta = request.POST.get('banco_tarjeta', '')
+                vencimiento = request.POST.get('vencimiento', '')
+                cvc = request.POST.get('cvc', '')
+
+                if len(numero_tarjeta) < 13 or tipo_tarjeta not in ('credito', 'debito') or not banco_tarjeta or len(vencimiento) != 5 or not cvc.isdigit():
+                    messages.error(request, 'Completa correctamente los datos simulados de la tarjeta.')
+                    return redirect('catalogo:checkout')
+
             cliente = obtener_o_crear_cliente(request.user)
             snapshot = [
                 {
@@ -194,6 +201,38 @@ def checkout(request):
                 total_pagado=totales['total'],
                 items_snapshot=snapshot,
             )
+
+            if claves_stripe_invalidas:
+                if not settings.DEBUG:
+                    pedido.delete()
+                    messages.error(
+                        request,
+                        'Stripe sandbox no está configurado: agrega las claves sk_test_ y pk_test_ en Render.',
+                    )
+                    return redirect('catalogo:pago_error')
+
+                pedido.estado = Pedido.Estado.PAGADO
+                pedido.save(update_fields=['estado'])
+                for item in snapshot:
+                    Producto.objects.filter(
+                        pk=item['producto_id'],
+                        stock__gte=int(item['cantidad']),
+                    ).update(stock=F('stock') - int(item['cantidad']))
+
+                from .webhook_views import (
+                    _enviar_confirmacion_compra,
+                    _enviar_sms_confirmacion,
+                )
+                _enviar_confirmacion_compra(pedido)
+                _enviar_sms_confirmacion(pedido)
+
+                _guardar_carrito(request, {})
+                messages.success(
+                    request,
+                    f'Modo demostración: pedido {pedido.numero_pedido} pagado correctamente.',
+                )
+                return redirect('catalogo:pago_exitoso', pedido_id=pedido.pk)
+
             monto_centavos = int(totales['total'] * 100)
             intent = stripe.PaymentIntent.create(
                 amount=monto_centavos,

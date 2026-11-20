@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'whitenoise.runserver_nostatic',
-    'storages',
     'clientes',
     'proveedores',
     'productos',
@@ -117,14 +116,19 @@ AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
 
 if AWS_STORAGE_BUCKET_NAME:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    if AWS_S3_ENDPOINT_URL:
-        AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL.rstrip('/')
-        AWS_S3_CUSTOM_DOMAIN = AWS_S3_ENDPOINT_URL.replace('https://', '').replace('http://', '')
-        MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
+    try:
+        import storages  # noqa: F401
+    except ModuleNotFoundError:
+        pass
     else:
-        AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+        DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+        if AWS_S3_ENDPOINT_URL:
+            AWS_S3_ENDPOINT_URL = AWS_S3_ENDPOINT_URL.rstrip('/')
+            AWS_S3_CUSTOM_DOMAIN = AWS_S3_ENDPOINT_URL.replace('https://', '').replace('http://', '')
+            MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
+        else:
+            AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+            MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/accounts/login/'
@@ -140,3 +144,29 @@ AUTHENTICATION_BACKENDS = [
 STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY', default='sk_test_placeholder')
 STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLISHABLE_KEY', default='pk_test_placeholder')
 STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET', default='whsec_placeholder')
+
+# ── Correo electrónico ──────────────────────────────────────────────────────
+EMAIL_HOST = env('EMAIL_HOST', default='')
+EMAIL_BACKEND = env(
+    'EMAIL_BACKEND',
+    default=(
+        'django.core.mail.backends.console.EmailBackend'
+        if DEBUG and not EMAIL_HOST
+        else 'django.core.mail.backends.smtp.EmailBackend'
+    ),
+)
+EMAIL_PORT = env.int('EMAIL_PORT', default=587)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', default=False)
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER or 'noreply@localhost')
+SALES_EMAIL = env('SALES_EMAIL', default=EMAIL_HOST_USER)
+
+# ── SMS con Twilio ──────────────────────────────────────────────────────────
+TWILIO_ACCOUNT_SID = env('TWILIO_ACCOUNT_SID', default='')
+TWILIO_AUTH_TOKEN = env('TWILIO_AUTH_TOKEN', default='')
+TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER', default='')
+SMS_DESTINATION_NUMBER = env('SMS_DESTINATION_NUMBER', default='+524611055784')
+
+PURCHASE_NOTIFICATION_EMAIL = env('PURCHASE_NOTIFICATION_EMAIL', default='v.munguiar.2528@cbtis198.edu.mx')
