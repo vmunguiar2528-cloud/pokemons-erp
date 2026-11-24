@@ -88,12 +88,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-DATABASE_URL = env(
-    'DATABASE_URL',
-    default='',
-)
+DATABASE_URL = env('DATABASE_URL', default='')
 
-if DATABASE_URL and not DATABASE_URL.startswith(('sqlite:', 'sqlite:///')):
+if DATABASE_URL and DATABASE_URL.startswith(('postgres://', 'postgresql://')):
     DATABASES = {
         'default': dj_database_url.parse(
             DATABASE_URL,
@@ -183,3 +180,13 @@ TWILIO_PHONE_NUMBER = env('TWILIO_PHONE_NUMBER', default='')
 SMS_DESTINATION_NUMBER = env('SMS_DESTINATION_NUMBER', default='+524611055784')
 
 PURCHASE_NOTIFICATION_EMAIL = env('PURCHASE_NOTIFICATION_EMAIL', default='v.munguiar.2528@cbtis198.edu.mx')
+
+# Seguridad: Render termina TLS y reenvía solicitudes mediante un proxy HTTPS.
+IS_PRODUCTION = env.bool('RENDER', default=False) or not DEBUG
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=IS_PRODUCTION)
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=IS_PRODUCTION)
+CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', default=IS_PRODUCTION)
+SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', default=3600 if IS_PRODUCTION else 0)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=IS_PRODUCTION)
+SECURE_HSTS_PRELOAD = env.bool('SECURE_HSTS_PRELOAD', default=IS_PRODUCTION)
